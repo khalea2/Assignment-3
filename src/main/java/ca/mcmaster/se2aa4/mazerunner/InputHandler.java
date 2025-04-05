@@ -8,15 +8,28 @@ import org.apache.logging.log4j.Logger;
 public class InputHandler {
     private static final Logger logger = LogManager.getLogger(InputHandler.class);
 
+    // singleton instance
+    private static InputHandler instance;
+
     // stores parsed command line arguments
     private CommandLine cmdArgs;
     private final Options cliOpts;
 
-    public InputHandler() {
+    // private constructor prevents instantiation from outside
+    private InputHandler() {
         // initialize available command line options
         cliOpts = new Options();
         cliOpts.addOption("i", "input", true, "Path to the maze input file");
         cliOpts.addOption("p", "path", true, "Solve maze based on inputted path");
+        cliOpts.addOption("method", true, "Specify algorithm to use (righthand, tremaux)");
+    }
+
+    // singleton getInstance method
+    public static synchronized InputHandler getInstance() {
+        if (instance == null) {
+            instance = new InputHandler();
+        }
+        return instance;
     }
 
     // attempts to parse command line arguments, returns success status
@@ -47,5 +60,19 @@ public class InputHandler {
             logger.info("No path provided");
             return null;
         }
+    }
+
+    public String getMethod() {
+        if (cmdArgs != null && cmdArgs.hasOption("method")) {
+            return cmdArgs.getOptionValue("method");
+        } else {
+            logger.info("No method specified, using default");
+            return "righthand";
+        }
+    }
+
+    // for testing purposes only - resets the singleton instance
+    public static void reset() {
+        instance = null;
     }
 }

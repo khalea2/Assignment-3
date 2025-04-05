@@ -10,7 +10,7 @@ public class PathTest {
 
     @Test
     public void testPathFormatting() {
-        // Test that the path gets formatted correctly with spaces
+        // test that the path gets formatted correctly with spaces
         List<String> moves = Arrays.asList("F", "F", "F", "L", "F", "F", "R", "F");
         Path path = new Path(moves);
 
@@ -19,7 +19,7 @@ public class PathTest {
 
     @Test
     public void testPathFactorization() {
-        // Test that repeated moves get factorized correctly
+        // test that repeated moves get factorized correctly
         List<String> moves = Arrays.asList("F", "F", "F", "L", "F", "F", "R", "F");
         Path path = new Path(moves);
 
@@ -28,7 +28,7 @@ public class PathTest {
 
     @Test
     public void testInputPathParsing() {
-        // Test that an input string gets parsed correctly
+        // test that an input string gets parsed correctly
         String inputPath = "3F L 2F R F";
         Path path = new Path(inputPath);
 

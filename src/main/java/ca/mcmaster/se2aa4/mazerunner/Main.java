@@ -13,16 +13,17 @@ public class Main {
         logger.info("** Starting Maze Runner");
         System.out.println("Starting Maze Runner");
 
-        InputHandler inputHandler = new InputHandler();
+        // use the Singleton instance of InputHandler
+        InputHandler inputHandler = InputHandler.getInstance();
 
         if (!inputHandler.parseArgs(args)) {
             logger.error("Failed to parse command-line arguments.");
             return;
-
         }
 
         String inputFilePath = inputHandler.getInputFilePath();
         String inputPath = inputHandler.getMazePath();
+        String method = inputHandler.getMethod();
 
         if (inputFilePath == null) {
             logger.error("Failed to read File Path.");
@@ -30,10 +31,12 @@ public class Main {
         }
 
         Maze maze = new Maze(inputFilePath);
-        Explorer explorer = new Explorer(maze);
+
+        // create explorer with the specified strategy
+        Explorer explorer = new Explorer(maze, method);
 
         if (inputPath == null) {
-            logger.info("No path provided.");
+            logger.info("No path provided, solving maze.");
         } else {
             System.out.println("Solving maze with path");
             System.out.println("Starting maze at: " + Arrays.toString(maze.getLeftOpening()));
@@ -54,10 +57,11 @@ public class Main {
 
         try {
             System.out.println("Starting maze at: " + Arrays.toString(maze.getLeftOpening()));
-            System.out.println("Starting right hand rule");
+            System.out.println("Starting " + (method.equals("tremaux") ? "Tremaux algorithm" : "right hand rule"));
             logger.info("**** Computing path");
 
-            explorer.exploreRightHandRule();
+            // use the exploreMaze method that uses the strategy
+            explorer.exploreMaze();
             List<String> moves = explorer.getPathSteps();
             Path path = new Path(moves);
 

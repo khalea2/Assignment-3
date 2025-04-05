@@ -1,12 +1,19 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class AllTests {
+
+    @BeforeEach
+    public void setup() {
+        // Reset the singleton instance between tests
+        InputHandler.reset();
+    }
 
     // ====== Additional Path Tests ======
 
@@ -54,7 +61,7 @@ public class AllTests {
     @Test
     public void testParseEmptyArgs() {
         // Test with empty arguments
-        InputHandler handler = new InputHandler();
+        InputHandler handler = InputHandler.getInstance();
         String[] args = {};
 
         boolean result = handler.parseArgs(args);
@@ -68,7 +75,7 @@ public class AllTests {
     @Test
     public void testParseInvalidOption() {
         // Test with an invalid option
-        InputHandler handler = new InputHandler();
+        InputHandler handler = InputHandler.getInstance();
         String[] args = { "-x", "something" };
 
         boolean result = handler.parseArgs(args);
@@ -82,7 +89,7 @@ public class AllTests {
     @Test
     public void testParseOnlyPathOption() {
         // Test with only path option
-        InputHandler handler = new InputHandler();
+        InputHandler handler = InputHandler.getInstance();
         String[] args = { "-p", "FFLRF" };
 
         boolean result = handler.parseArgs(args);

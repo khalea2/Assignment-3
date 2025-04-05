@@ -1,6 +1,7 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
@@ -8,11 +9,17 @@ import java.util.List;
 
 public class AllTests {
 
-    // ====== Additional Path Tests ======
+    @BeforeEach
+    public void setup() {
+        // reset the singleton instance between tests
+        InputHandler.reset();
+    }
+
+    // ====== additional path tests ======
 
     @Test
     public void testEmptyPath() {
-        // Test creating a path with empty list
+        // test creating a path with empty list
         List<String> moves = Arrays.asList();
         Path path = new Path(moves);
 
@@ -22,7 +29,7 @@ public class AllTests {
 
     @Test
     public void testSingleMovePath() {
-        // Test with a single move
+        // test with a single move
         List<String> moves = Arrays.asList("F");
         Path path = new Path(moves);
 
@@ -32,7 +39,7 @@ public class AllTests {
 
     @Test
     public void testComplexPath() {
-        // Test with a more complex path
+        // test with a more complex path
         List<String> moves = Arrays.asList("F", "F", "L", "L", "F", "F", "F", "R", "R", "F", "F");
         Path path = new Path(moves);
 
@@ -42,24 +49,24 @@ public class AllTests {
 
     @Test
     public void testMixedPathFormat() {
-        // Test with mixed spacing in the input path
+        // test with mixed spacing in the input path
         String inputPath = "2F  L   3F R";
         Path path = new Path(inputPath);
 
         assertEquals("FF L FFF R", path.getFormattedInputtedPath());
     }
 
-    // ====== Additional InputHandler Tests ======
+    // ====== additional inputHandler tests ======
 
     @Test
     public void testParseEmptyArgs() {
-        // Test with empty arguments
-        InputHandler handler = new InputHandler();
+        // test with empty arguments
+        InputHandler handler = InputHandler.getInstance();
         String[] args = {};
 
         boolean result = handler.parseArgs(args);
 
-        // Might return true with empty args (succeeds but no options set)
+        // might return true with empty args (succeeds but no options set)
         assertTrue(result);
         assertNull(handler.getInputFilePath());
         assertNull(handler.getMazePath());
@@ -67,13 +74,13 @@ public class AllTests {
 
     @Test
     public void testParseInvalidOption() {
-        // Test with an invalid option
-        InputHandler handler = new InputHandler();
+        // test with an invalid option
+        InputHandler handler = InputHandler.getInstance();
         String[] args = { "-x", "something" };
 
         boolean result = handler.parseArgs(args);
 
-        // Commons CLI appears to return false for unknown options
+        // commons CLI appears to return false for unknown options
         assertFalse(result);
         assertNull(handler.getInputFilePath());
         assertNull(handler.getMazePath());
@@ -81,8 +88,8 @@ public class AllTests {
 
     @Test
     public void testParseOnlyPathOption() {
-        // Test with only path option
-        InputHandler handler = new InputHandler();
+        // test with only path option
+        InputHandler handler = InputHandler.getInstance();
         String[] args = { "-p", "FFLRF" };
 
         boolean result = handler.parseArgs(args);
